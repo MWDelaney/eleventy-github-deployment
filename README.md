@@ -1,6 +1,6 @@
 # Deploy Eleventy from GitHub
 
-This repository demonstrates how to deploy Eleventy (11ty) static sites to common hosting environments using GitHub Actions. It showcases automated deployment workflows with integrated release management and environment tracking.
+This repository demonstrates how to deploy [Eleventy](https://11ty.dev) static sites to common hosting environments using GitHub Actions. It showcases automated deployment workflows with integrated release management and environment tracking.
 
 ## 🚀 Deployment Targets
 
@@ -51,33 +51,35 @@ Each deployment workflow creates and manages environments:
 
 ## ⚙️ Configuration
 
-### Required Secrets
+Configure your deployment target by setting up the appropriate secrets and variables in **Settings → Secrets and variables → Actions**.
 
-Set these in **Settings → Secrets and variables → Actions → Secrets**:
+### GitHub Pages Deployment
 
-#### For FTP Deployment
+**Required Setup:**
+
+- Enable GitHub Pages in **Settings → Pages**
+- Configure source as "GitHub Actions"
+
+**Variables (optional):**
+
+- `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
+
+### FTP Deployment
+
+**Required Secrets (Settings → Secrets and variables → Actions → Secrets):**
 
 - `FTP_SERVER` - Your FTP server hostname (e.g., `ftp.example.com`)
 - `FTP_USERNAME` - Your FTP username
 - `FTP_PASSWORD` - Your FTP password
 
-### Required Variables
-
-Set these in **Settings → Secrets and variables → Actions → Variables**:
-
-#### FTP Deployment Only
+**Required Variables (Settings → Secrets and variables → Actions → Variables):**
 
 - `SITE_URL` - Your website URL (e.g., `https://example.com`)
 
-### Optional Variables
+**Optional Variables:**
 
 - `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
 - `FTP_SERVER_DIR` - FTP upload directory (defaults to `/`)
-
-### GitHub Pages Setup
-
-- Enable GitHub Pages in **Settings → Pages**
-- Configure source as "GitHub Actions"
 
 ## 🔄 Workflow Triggers
 
