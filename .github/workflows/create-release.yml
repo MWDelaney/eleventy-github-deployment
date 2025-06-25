@@ -19,6 +19,7 @@ run-name: create-release
 
 on:
   workflow_dispatch:
+  deployment:
 
 env:
   environment: production

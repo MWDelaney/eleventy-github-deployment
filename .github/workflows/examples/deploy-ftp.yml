@@ -98,21 +98,3 @@ jobs:
           env: ${{ steps.deployment.outputs.env }}
           env_url: ${{ vars.SITE_URL }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-
-  release:
-      needs: build
-      runs-on: ubuntu-latest
-      steps:
-
-        # Checkout the repo
-        - uses: actions/checkout@v4
-          with:
-            ref: ${{ github.event.pull_request.base.ref }}
-
-        # Create a new release
-        - name: 📦 Create Release
-          uses: ./.github/actions/new-release
-          with:
-            environment: ${{ env.environment }}
-            ref: ${{ github.sha }}
-            github_token: ${{ secrets.GITHUB_TOKEN }}

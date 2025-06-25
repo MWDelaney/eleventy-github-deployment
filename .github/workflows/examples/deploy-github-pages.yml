@@ -75,21 +75,3 @@ jobs:
           artifact_name: public
           artifact_path: public
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-  release:
-      needs: build
-      runs-on: ubuntu-latest
-      steps:
-
-        # Checkout the repo
-        - uses: actions/checkout@v4
-          with:
-            ref: ${{ github.event.pull_request.base.ref }}
-
-        # Create a new release
-        - name: 📦 Create Release
-          uses: ./.github/actions/new-release
-          with:
-            environment: ${{ env.environment }}
-            ref: ${{ github.sha }}
-            github_token: ${{ secrets.GITHUB_TOKEN }}
