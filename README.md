@@ -20,9 +20,10 @@ This project includes workflows for deploying to:
 │   ├── deploy-ftp/           # FTP deployment action
 │   └── new-release/          # Release creation action
 └── workflows/
-    ├── deploy-github-pages.yml # GitHub Pages deployment workflow
-    ├── deploy-ftp.yml         # FTP deployment workflow
-    └── create-release.yml     # Manual release workflow
+    ├── create-release.yml     # Manual release workflow
+    └── examples/              # Example deployment workflows
+        ├── deploy-github-pages.yml # GitHub Pages deployment workflow
+        └── deploy-ftp.yml         # FTP deployment workflow
 ```
 
 ## 🔧 GitHub Integrations
@@ -91,9 +92,13 @@ All deployment workflows trigger on:
 
 1. **Fork this repository** or use as template
 2. **Configure your Eleventy project** in the repository root
-3. **Set up required secrets and variables** in repository settings
-4. **Enable GitHub Pages** if using GitHub Pages deployment
-5. **Push to main branch** to trigger first deployment
+3. **Choose your deployment method** and move the appropriate workflow:
+   - For GitHub Pages: Move `.github/workflows/examples/deploy-github-pages.yml` to `.github/workflows/`
+   - For FTP deployment: Move `.github/workflows/examples/deploy-ftp.yml` to `.github/workflows/`
+   - You can use both by moving both files to the workflows directory
+4. **Set up required secrets and variables** in repository settings (see Configuration section)
+5. **Enable GitHub Pages** if using GitHub Pages deployment
+6. **Push to main branch** to trigger first deployment
 
 ## 🔍 Monitoring Deployments
 
