@@ -1,0 +1,32 @@
+name: '👷‍♂️ Build Site'
+description: 'Build the site for deployment'
+
+inputs:
+  github_token:
+    description: 'The GitHub token to use'
+    required: true
+  build_command:
+    description: 'The npm command to run for building the site'
+    required: false
+    default: 'npm run build'
+
+runs:
+  using: 'composite'
+  steps:
+
+    # Install dependencies
+    - name: 🔧 Install Dependencies
+      shell: bash
+      run: npm install
+
+    # Build the site
+    - name: 👷‍♂️ Build Site
+      shell: bash
+      run: ${{ inputs.build_command }}
+
+    # Upload the public directory as an artifact
+    - name: 📦 Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: public
+        path: public

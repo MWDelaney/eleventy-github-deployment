@@ -1,0 +1,107 @@
+# Deploy Eleventy from GitHub
+
+This repository demonstrates how to deploy Eleventy (11ty) static sites to common hosting environments using GitHub Actions. It showcases automated deployment workflows with integrated release management and environment tracking.
+
+## 🚀 Deployment Targets
+
+This project includes workflows for deploying to:
+
+- **GitHub Pages** - Built-in GitHub hosting with automatic SSL
+- **FTP Server** - Traditional web hosting via FTP upload
+- **Manual Releases** - Create tagged releases without deployment
+
+## 📁 Project Structure
+
+```text
+.github/
+├── actions/
+│   ├── build/                 # Reusable build action
+│   ├── deploy-github-pages/   # GitHub Pages deployment action
+│   ├── deploy-ftp/           # FTP deployment action
+│   └── new-release/          # Release creation action
+└── workflows/
+    ├── deploy-github-pages.yml # GitHub Pages deployment workflow
+    ├── deploy-ftp.yml         # FTP deployment workflow
+    └── create-release.yml     # Manual release workflow
+```
+
+## 🔧 GitHub Integrations
+
+### Releases
+
+- **Automatic release creation** after successful deployments
+- **Version tagging** based on commit SHA
+- **Release notes** generated from commits
+- **Artifact attachment** of built site files
+
+### Deployments & Environments
+
+- **Environment tracking** for production deployments
+- **Deployment status** updates (pending, success, failure)
+- **Environment URLs** automatically linked to deployment records
+- **Deployment history** visible in repository insights
+
+### Environment Configuration
+
+Each deployment workflow creates and manages environments:
+
+- **`github-pages`** - For GitHub Pages deployments (this is automatic from GitHub)
+- **`production`** - For FTP and other production deployments
+
+## ⚙️ Configuration
+
+### Required Secrets
+
+Set these in **Settings → Secrets and variables → Actions → Secrets**:
+
+#### For FTP Deployment
+
+- `FTP_SERVER` - Your FTP server hostname (e.g., `ftp.example.com`)
+- `FTP_USERNAME` - Your FTP username
+- `FTP_PASSWORD` - Your FTP password
+
+### Required Variables
+
+Set these in **Settings → Secrets and variables → Actions → Variables**:
+
+#### FTP Deployment Only
+
+- `SITE_URL` - Your website URL (e.g., `https://example.com`)
+
+### Optional Variables
+
+- `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
+- `FTP_SERVER_DIR` - FTP upload directory (defaults to `/`)
+
+### GitHub Pages Setup
+
+- Enable GitHub Pages in **Settings → Pages**
+- Configure source as "GitHub Actions"
+
+## 🔄 Workflow Triggers
+
+### Automatic Deployment
+
+All deployment workflows trigger on:
+
+- **Push (or merge) to main branch** - Automatic production deployment
+- **Manual dispatch** - Run workflow manually from Actions tab
+
+## 📚 Getting Started
+
+1. **Fork this repository** or use as template
+2. **Configure your Eleventy project** in the repository root
+3. **Set up required secrets and variables** in repository settings
+4. **Enable GitHub Pages** if using GitHub Pages deployment
+5. **Push to main branch** to trigger first deployment
+
+## 🔍 Monitoring Deployments
+
+Track your deployments through:
+
+- **Actions tab** - View workflow run details and logs
+- **Environments** - See deployment history and status
+- **Releases** - Browse tagged versions and artifacts
+- **Deployments API** - Integrate with external monitoring tools
+
+This project demonstrates modern DevOps practices for static site deployment, providing a foundation for production-ready Eleventy hosting workflows.
