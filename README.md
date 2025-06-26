@@ -8,6 +8,7 @@ This project includes workflows for deploying to:
 
 - **GitHub Pages** - Built-in GitHub hosting with automatic SSL
 - **FTP Server** - Traditional web hosting via FTP upload
+- **SSH Server** - Secure deployment via SSH
 - **Manual Releases** - Create tagged releases without deployment
 
 ## 📁 Project Structure
@@ -18,12 +19,14 @@ This project includes workflows for deploying to:
 │   ├── build/                 # Reusable build action
 │   ├── deploy-github-pages/   # GitHub Pages deployment action
 │   ├── deploy-ftp/           # FTP deployment action
+│   ├── deploy-ssh/           # SSH deployment action
 │   └── new-release/          # Release creation action
 └── workflows/
     ├── create-release.yml     # Manual release workflow
     └── examples/              # Example deployment workflows
         ├── deploy-github-pages.yml # GitHub Pages deployment workflow
-        └── deploy-ftp.yml         # FTP deployment workflow
+        ├── deploy-ftp.yml         # FTP deployment workflow
+        └── deploy-ssh.yml         # SSH deployment workflow
 ```
 
 ## 🔧 GitHub Integrations
@@ -81,6 +84,25 @@ Configure your deployment target by setting up the appropriate secrets and varia
 - `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
 - `FTP_SERVER_DIR` - FTP upload directory (defaults to `/`)
 
+### SSH Deployment
+
+**Required Secrets (Settings → Secrets and variables → Actions → Secrets):**
+
+- `SSH_SERVER` - Your SSH server hostname (e.g., `example.com`)
+- `SSH_USERNAME` - Your SSH username
+- `SSH_PRIVATE_KEY` - Your SSH private key (the entire key contents)
+
+**Required Variables (Settings → Secrets and variables → Actions → Variables):**
+
+- `SITE_URL` - Your website URL (e.g., `https://example.com`)
+- `SSH_SERVER_DIR` - Server directory to deploy to (e.g., `/var/www/html`)
+
+**Optional Variables:**
+
+- `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
+- `SSH_PORT` - SSH port (defaults to `22`)
+- `SSH_EXCLUDE` - Files to exclude from deployment (comma separated)
+
 ## 🔄 Workflow Triggers
 
 ### Automatic Deployment
@@ -97,7 +119,8 @@ All deployment workflows trigger on:
 3. **Choose your deployment method** and move the appropriate workflow:
    - For GitHub Pages: Move `.github/workflows/examples/deploy-github-pages.yml` to `.github/workflows/`
    - For FTP deployment: Move `.github/workflows/examples/deploy-ftp.yml` to `.github/workflows/`
-   - You can use both by moving both files to the workflows directory
+   - For SSH deployment: Move `.github/workflows/examples/deploy-ssh.yml` to `.github/workflows/`
+   - You can use multiple deployment methods by moving multiple files to the workflows directory
 4. **Set up required secrets and variables** in repository settings (see Configuration section)
 5. **Enable GitHub Pages** if using GitHub Pages deployment
 6. **Push to main branch** to trigger first deployment
