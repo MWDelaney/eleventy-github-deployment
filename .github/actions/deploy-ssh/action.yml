@@ -1,4 +1,4 @@
-name: 'Deploy via SSH'
+name: '🚀 Deploy via SSH'
 description: 'Downloads build artifact and deploys it via SSH'
 inputs:
   artifact_name:
