@@ -35,14 +35,6 @@ runs:
         custom_tag: "${{ inputs.environment }}-${{ steps.get_date.outputs.machine_date }}"
         tag_prefix: ''
 
-    # Get the artifact from the build job
-    - name: 📥 Get artifact
-      id: get_artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: public
-        path: public
-
     - name: 🗜 Zip artifact
       run: zip -r public.zip public
       shell: bash

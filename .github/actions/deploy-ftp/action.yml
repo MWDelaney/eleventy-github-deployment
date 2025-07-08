@@ -1,4 +1,4 @@
-name: 'Deploy to FTP'
+name: '🚀 Deploy to FTP'
 description: 'Downloads build artifact and deploys it to FTP server'
 inputs:
   artifact_name:
@@ -36,7 +36,6 @@ runs:
       with:
         name: ${{ inputs.artifact_name }}
         path: ${{ inputs.artifact_path }}
-      shell: bash
 
     # Deploy to FTP server
     - name: 🚀 Deploy to FTP

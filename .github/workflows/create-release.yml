@@ -30,11 +30,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Checkout the repo
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-
       # Build the site
       - name: 👷‍♂️ Build the site
         uses: ./.github/actions/build
@@ -46,12 +41,6 @@ jobs:
       needs: build
       runs-on: ubuntu-latest
       steps:
-
-        # Checkout the repo
-        - uses: actions/checkout@v4
-          with:
-            ref: ${{ github.event.pull_request.base.ref }}
-
         # Create a new release
         - name: 📦 Create Release
           uses: ./.github/actions/new-release

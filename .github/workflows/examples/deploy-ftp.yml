@@ -43,17 +43,12 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Checkout the repo
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-
       # Build the site
       - name: 👷‍♂️ Build the site
         uses: ./.github/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_command: ${{ vars.BUILD_COMMAND }}
+          build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
 
   deploy:
     # Add a dependency to the build job

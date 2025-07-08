@@ -1,12 +1,8 @@
 name: '🚀 Deploy via SSH'
-description: 'Downloads build artifact and deploys it via SSH'
+description: 'Deploys site via SSH with deployment tracking'
 inputs:
-  artifact_name:
-    description: 'Name of the artifact to download'
-    required: false
-    default: 'public'
-  artifact_path:
-    description: 'Path to extract the artifact to'
+  source_path:
+    description: 'Path to the build directory to deploy'
     required: false
     default: 'public'
   ssh_server:
@@ -29,26 +25,48 @@ inputs:
     description: 'Files to exclude from deployment (comma separated)'
     required: false
     default: ''
+  github_token:
+    description: 'GitHub token for deployment tracking'
+    required: true
+  environment:
+    description: 'Environment name for deployment'
+    required: true
+  site_url:
+    description: 'Site URL for deployment status'
+    required: true
 runs:
   using: 'composite'
   steps:
-    # Get the artifact from the build job
-    - name: 📥 Get artifact
-      id: get_artifact
-      uses: actions/download-artifact@v4
+    # Start a deployment
+    - name: 🟢 Start Deployment
+      id: deployment
+      uses: bobheadxi/deployments@v1
       with:
-        name: ${{ inputs.artifact_name }}
-        path: ${{ inputs.artifact_path }}
-      shell: bash
+        step: start
+        token: ${{ inputs.github_token }}
+        env: ${{ inputs.environment }}
 
     # Deploy via SSH
     - name: 🚀 Deploy via SSH
+      id: ssh_deploy
       uses: SamKirkland/web-deploy@v1
       with:
         target-server: ${{ inputs.ssh_server }}
         remote-user: ${{ inputs.ssh_username }}
         private-ssh-key: ${{ inputs.ssh_private_key }}
         ssh-port: ${{ inputs.ssh_port }}
-        source-path: ${{ inputs.artifact_path }}/
+        source-path: ${{ inputs.source_path }}/
         destination-path: ${{ inputs.server_dir }}
         exclude-list: ${{ inputs.exclude }}
+
+    # Set the deployment status to success
+    - name: ✅ Finish Deployment
+      uses: bobheadxi/deployments@v1
+      if: always()
+      with:
+        step: finish
+        token: ${{ inputs.github_token }}
+        status: ${{ job.status }}
+        env: ${{ steps.deployment.outputs.env }}
+        env_url: ${{ inputs.site_url }}
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}

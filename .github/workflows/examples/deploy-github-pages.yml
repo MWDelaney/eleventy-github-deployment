@@ -38,17 +38,13 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Checkout the repo
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-
       # Build the site
       - name: 👷‍♂️ Build the site
         uses: ./.github/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_command: ${{ vars.BUILD_COMMAND }}
+          build_command: ${{ secrets.BUILD_COMMAND || 'npm run build' }}
+          github_pages: true
 
   deploy:
     # Add a dependency to the build job
@@ -62,16 +58,18 @@ jobs:
     # Deploy to the github-pages environment
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.gh_pages.outputs.page_url }}
 
     # Deploy the site to GitHub Pages
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repo to access custom actions
+      - uses: actions/checkout@v4
+
       # Deploy to GitHub Pages
       - name: 🚀 Deploy to GitHub Pages
         id: gh_pages
         uses: ./.github/actions/deploy-github-pages
         with:
           artifact_name: public
-          artifact_path: public
           github_token: ${{ secrets.GITHUB_TOKEN }}

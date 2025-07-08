@@ -49,11 +49,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Checkout the repo
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-
       # Build the site
       - name: 👷‍♂️ Build the site
         uses: ./.github/actions/build
@@ -72,37 +67,18 @@ jobs:
     # Deploy the site via SSH
     runs-on: ubuntu-latest
     steps:
-      # Start a deployment
-      - name: 🟢 Start Deployment
-        id: deployment
-        uses: bobheadxi/deployments@v1
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: ${{ env.environment }}
-
       # Deploy via SSH
       - name: 🚀 Deploy via SSH
         id: ssh_deploy
         uses: ./.github/actions/deploy-ssh
         with:
-          artifact_name: public
-          artifact_path: public
+          source_path: public
           ssh_server: ${{ secrets.SSH_SERVER }}
           ssh_username: ${{ secrets.SSH_USERNAME }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           ssh_port: ${{ vars.SSH_PORT || '22' }}
           server_dir: ${{ vars.SSH_SERVER_DIR }}
           exclude: ${{ vars.SSH_EXCLUDE }}
-
-      # Set the deployment status to success
-      - name: ✅ Finish Deployment
-        uses: bobheadxi/deployments@v1
-        if: always()
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          env: ${{ steps.deployment.outputs.env }}
-          env_url: ${{ vars.SITE_URL }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          environment: ${{ env.environment }}
+          site_url: ${{ vars.SITE_URL }}

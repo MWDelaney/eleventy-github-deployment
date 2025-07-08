@@ -9,10 +9,18 @@ inputs:
     description: 'The npm command to run for building the site'
     required: false
     default: 'npm run build'
+  github_pages:
+    description: 'Whether to deploy to GitHub Pages'
+    required: false
+    default: 'false'
 
 runs:
   using: 'composite'
   steps:
+
+    # Checkout the repository
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
 
     # Install dependencies
     - name: 🔧 Install Dependencies
@@ -29,4 +37,12 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: public
+        path: public
+
+    # If deploying to GitHub Pages, upload the public directory as a Pages artifact
+    - name: 📦 Upload Pages Artifact
+      uses: actions/upload-pages-artifact@v3
+      if: ${{ inputs.github_pages }} == 'true'
+      with:
+        name: github-pages
         path: public
