@@ -59,11 +59,6 @@ jobs:
   deploy:
     # Add a dependency to the build job
     needs: build
-
-    # Deploy to the production environment
-    environment:
-      name: production
-
     # Deploy the site via SSH
     runs-on: ubuntu-latest
     steps:
@@ -72,7 +67,7 @@ jobs:
         id: ssh_deploy
         uses: ./.github/actions/deploy-ssh
         with:
-          source_path: public
+          source_path: ${{ vars.PUBLISH_DIR || '_site' }}
           ssh_server: ${{ secrets.SSH_SERVER }}
           ssh_username: ${{ secrets.SSH_USERNAME }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

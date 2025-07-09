@@ -1,14 +1,6 @@
 name: '🚀 Deploy to GitHub Pages'
 description: 'Downloads build artifact and deploys it to GitHub Pages'
 inputs:
-  artifact_name:
-    description: 'Name of the artifact to download'
-    required: false
-    default: 'public'
-  artifact_path:
-    description: 'Path to extract the artifact to'
-    required: false
-    default: 'public'
   github_token:
     description: 'GitHub token for deployment'
     required: true

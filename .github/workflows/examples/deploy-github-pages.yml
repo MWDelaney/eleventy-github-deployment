@@ -55,11 +55,6 @@ jobs:
       pages: write # to deploy to Pages
       id-token: write # to verify the deployment originates from an appropriate source
 
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.gh_pages.outputs.page_url }}
-
     # Deploy the site to GitHub Pages
     runs-on: ubuntu-latest
     steps:
@@ -71,5 +66,4 @@ jobs:
         id: gh_pages
         uses: ./.github/actions/deploy-github-pages
         with:
-          artifact_name: public
           github_token: ${{ secrets.GITHUB_TOKEN }}

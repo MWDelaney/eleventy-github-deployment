@@ -13,6 +13,10 @@ inputs:
     description: 'Whether to deploy to GitHub Pages'
     required: false
     default: 'false'
+  publish_dir:
+    description: 'The directory to publish'
+    required: false
+    default: '_site'
 
 runs:
   using: 'composite'
@@ -32,17 +36,17 @@ runs:
       shell: bash
       run: ${{ inputs.build_command }}
 
-    # Upload the public directory as an artifact
+    # Upload the _site directory as an artifact
     - name: 📦 Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: public
-        path: public
+        name: ${{ inputs.publish_dir }}
+        path: ${{ inputs.publish_dir }}
 
-    # If deploying to GitHub Pages, upload the public directory as a Pages artifact
+    # If deploying to GitHub Pages, upload the _site directory as a Pages artifact
     - name: 📦 Upload Pages Artifact
       uses: actions/upload-pages-artifact@v3
       if: ${{ inputs.github_pages }} == 'true'
       with:
         name: github-pages
-        path: public
+        path: ${{ inputs.publish_dir }}

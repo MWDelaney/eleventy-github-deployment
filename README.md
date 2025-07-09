@@ -7,7 +7,7 @@ This repository demonstrates how to deploy [Eleventy](https://11ty.dev) static s
 This project includes workflows for deploying to:
 
 - **GitHub Pages** - Built-in GitHub hosting with automatic SSL
-- **FTP Server** - Traditional web hosting via FTP upload
+- **FTP Server** - Traditional web hosting via FTP upload (not recommended, but included for completeness)
 - **SSH Server** - Secure deployment via SSH
 - **Manual Releases** - Create tagged releases without deployment
 

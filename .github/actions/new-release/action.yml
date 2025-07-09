@@ -14,6 +14,11 @@ inputs:
     description: 'The GitHub token to use'
     required: true
 
+  publish_dir:
+    description: 'The directory to publish'
+    required: false
+    default: '_site'
+
 runs:
   using: 'composite'
   steps:
@@ -36,7 +41,7 @@ runs:
         tag_prefix: ''
 
     - name: 🗜 Zip artifact
-      run: zip -r public.zip public
+      run: zip -r ${{ inputs.publish_dir }}.zip ${{ inputs.publish_dir }}
       shell: bash
 
     # If this is the main branch, create a release named after the github repo slug and the human readable date
@@ -45,7 +50,7 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         tag: "${{ steps.tag_version.outputs.new_tag }}"
-        artifacts: "public.zip"
+        artifacts: "${{ inputs.publish_dir }}.zip"
         token: ${{ inputs.github_token }}
         makeLatest: true
         name: "${{ github.event.repository.name }} ${{ steps.get_date.outputs.human_date }}"
