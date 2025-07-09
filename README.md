@@ -1,137 +1,127 @@
 # Deploy Eleventy from GitHub
 
-This repository demonstrates how to deploy [Eleventy](https://11ty.dev) static sites to common hosting environments using GitHub Actions. It showcases automated deployment workflows with integrated release management and environment tracking.
+Automated deployment workflows for [Eleventy](https://11ty.dev) static sites using GitHub Actions. Deploy to GitHub Pages, FTP servers, or SSH servers with integrated release management and deployment tracking.
 
-## 🚀 Deployment Targets
+> **Note:** For **Netlify** or **Cloudflare Pages**, you don't need this repository! Both platforms integrate directly with GitHub and can automatically build and deploy your Eleventy site. See their documentation:
+>
+> - [Netlify GitHub Integration](https://docs.netlify.com/git/overview/)
+> - [Cloudflare Pages GitHub Integration](https://developers.cloudflare.com/pages/get-started/git-integration/)
 
-This project includes workflows for deploying to:
+## 🚀 Deployment Options
 
-- **GitHub Pages** - Built-in GitHub hosting with automatic SSL
-- **FTP Server** - Traditional web hosting via FTP upload (not recommended, but included for completeness)
-- **SSH Server** - Secure deployment via SSH
+- **GitHub Pages** - Free hosting with automatic SSL
+- **SSH Server** - Deploy to your own server via SSH
+- **FTP Server** - Deploy to traditional web hosting
 - **Manual Releases** - Create tagged releases without deployment
 
 ## 📁 Project Structure
 
 ```text
 .github/
-├── actions/
-│   ├── build/                 # Reusable build action
-│   ├── deploy-github-pages/   # GitHub Pages deployment action
-│   ├── deploy-ftp/           # FTP deployment action
-│   ├── deploy-ssh/           # SSH deployment action
-│   └── new-release/          # Release creation action
+├── actions/                   # Reusable GitHub Actions
+│   ├── build/                 # Build Eleventy site
+│   ├── deploy-github-pages/   # Deploy to GitHub Pages
+│   ├── deploy-ftp/           # Deploy via FTP
+│   ├── deploy-ssh/           # Deploy via SSH
+│   └── new-release/          # Create releases
 └── workflows/
-    ├── create-release.yml     # Manual release workflow
+    ├── create-release.yml     # Manual release creation
+    ├── test.yml              # Test builds on pull requests
     └── examples/              # Example deployment workflows
-        ├── deploy-github-pages.yml # GitHub Pages deployment workflow
-        ├── deploy-ftp.yml         # FTP deployment workflow
-        └── deploy-ssh.yml         # SSH deployment workflow
+        ├── deploy-github-pages.yml
+        ├── deploy-ftp.yml
+        └── deploy-ssh.yml
 ```
 
-## 🔧 GitHub Integrations
+## ⚡ Quick Start
 
-### Releases
+1. **Use this template** or fork this repository
+2. **Add your Eleventy project** files to the repository root
+3. **Choose a deployment method** and copy the appropriate workflow file from `.github/workflows/examples/` to `.github/workflows/`:
+   - `deploy-github-pages.yml` for GitHub Pages
+   - `deploy-ssh.yml` for SSH deployment  
+   - `deploy-ftp.yml` for FTP deployment
 
-- **Automatic release creation** after successful deployments
-- **Version tagging** based on commit SHA
-- **Release notes** generated from commits
-- **Artifact attachment** of built site files
-
-### Deployments & Environments
-
-- **Environment tracking** for production deployments
-- **Deployment status** updates (pending, success, failure)
-- **Environment URLs** automatically linked to deployment records
-- **Deployment history** visible in repository insights
-
-### Environment Configuration
-
-Each deployment workflow creates and manages environments:
-
-- **`github-pages`** - For GitHub Pages deployments (this is automatic from GitHub)
-- **`production`** - For FTP and other production deployments
+4. **Configure secrets and variables** (see Configuration below)
+5. **Push to main branch** to trigger deployment
 
 ## ⚙️ Configuration
 
-Configure your deployment target by setting up the appropriate secrets and variables in **Settings → Secrets and variables → Actions**.
+### GitHub Pages
 
-### GitHub Pages Deployment
-
-**Required Setup:**
+**Setup:**
 
 - Enable GitHub Pages in **Settings → Pages**
-- Configure source as "GitHub Actions"
-
-**Variables (optional):**
-
-- `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
-
-### FTP Deployment
-
-**Required Secrets (Settings → Secrets and variables → Actions → Secrets):**
-
-- `FTP_SERVER` - Your FTP server hostname (e.g., `ftp.example.com`)
-- `FTP_USERNAME` - Your FTP username
-- `FTP_PASSWORD` - Your FTP password
-
-**Required Variables (Settings → Secrets and variables → Actions → Variables):**
-
-- `SITE_URL` - Your website URL (e.g., `https://example.com`)
+- Set source to "GitHub Actions"
 
 **Optional Variables:**
 
-- `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
-- `FTP_SERVER_DIR` - FTP upload directory (defaults to `/`)
+- `BUILD_COMMAND` - Build command (default: `npm run build`)
 
 ### SSH Deployment
 
-**Required Secrets (Settings → Secrets and variables → Actions → Secrets):**
+**Required Secrets:**
 
-- `SSH_SERVER` - Your SSH server hostname (e.g., `example.com`)
-- `SSH_USERNAME` - Your SSH username
-- `SSH_PRIVATE_KEY` - Your SSH private key (the entire key contents)
+- `SSH_SERVER` - Server hostname (e.g., `example.com`)
+- `SSH_USERNAME` - SSH username
+- `SSH_PRIVATE_KEY` - SSH private key content
 
-**Required Variables (Settings → Secrets and variables → Actions → Variables):**
+**Required Variables:**
 
 - `SITE_URL` - Your website URL (e.g., `https://example.com`)
-- `SSH_SERVER_DIR` - Server directory to deploy to (e.g., `/var/www/html`)
+- `SSH_SERVER_DIR` - Deploy directory (e.g., `/var/www/html`)
 
 **Optional Variables:**
 
-- `BUILD_COMMAND` - Custom build command (defaults to `npm run build`)
-- `SSH_PORT` - SSH port (defaults to `22`)
-- `SSH_EXCLUDE` - Files to exclude from deployment (comma separated)
+- `BUILD_COMMAND` - Build command (default: `npm run build`)
+- `SSH_PORT` - SSH port (default: `22`)
+- `SSH_EXCLUDE` - Files to exclude (comma separated)
 
-## 🔄 Workflow Triggers
+### FTP Deployment
 
-### Automatic Deployment
+**Required Secrets:**
 
-All deployment workflows trigger on:
+- `FTP_SERVER` - FTP server hostname
+- `FTP_USERNAME` - FTP username
+- `FTP_PASSWORD` - FTP password
 
-- **Push (or merge) to main branch** - Automatic production deployment
-- **Manual dispatch** - Run workflow manually from Actions tab
+**Required Variables:**
 
-## 📚 Getting Started
+- `SITE_URL` - Your website URL
 
-1. **Fork this repository** or use as template
-2. **Configure your Eleventy project** in the repository root
-3. **Choose your deployment method** and move the appropriate workflow:
-   - For GitHub Pages: Move `.github/workflows/examples/deploy-github-pages.yml` to `.github/workflows/`
-   - For FTP deployment: Move `.github/workflows/examples/deploy-ftp.yml` to `.github/workflows/`
-   - For SSH deployment: Move `.github/workflows/examples/deploy-ssh.yml` to `.github/workflows/`
-   - You can use multiple deployment methods by moving multiple files to the workflows directory
-4. **Set up required secrets and variables** in repository settings (see Configuration section)
-5. **Enable GitHub Pages** if using GitHub Pages deployment
-6. **Push to main branch** to trigger first deployment
+**Optional Variables:**
 
-## 🔍 Monitoring Deployments
+- `BUILD_COMMAND` - Build command (default: `npm run build`)
+- `FTP_SERVER_DIR` - Upload directory (default: `/`)
 
-Track your deployments through:
+## 🔧 Features
 
-- **Actions tab** - View workflow run details and logs
-- **Environments** - See deployment history and status
-- **Releases** - Browse tagged versions and artifacts
-- **Deployments API** - Integrate with external monitoring tools
+- **Automated deployment** on push to main branch
+- **Manual deployment** via GitHub Actions tab
+- **Deployment tracking** with status updates
+- **Environment management** for production deployments
+- **Automatic releases** with version tagging
+- **Build testing** on pull requests
 
-This project demonstrates modern DevOps practices for static site deployment, providing a foundation for production-ready Eleventy hosting workflows.
+## 📝 SSH Key Setup
+
+1. Generate SSH key pair:
+
+   ```bash
+   ssh-keygen -t rsa -b 4096 -C "github-actions"
+   ```
+
+2. Add public key to server's `~/.ssh/authorized_keys`
+3. Add private key content to `SSH_PRIVATE_KEY` secret
+
+## 🎯 Workflow Triggers
+
+- **Push to main** - Automatic deployment
+- **Pull requests** - Build testing only
+- **Manual dispatch** - Run workflows manually
+
+All secrets and variables are configured in **Settings → Secrets and variables → Actions**.
+
+---
+
+This repository demonstrates modern DevOps practices for static site deployment with GitHub Actions.
