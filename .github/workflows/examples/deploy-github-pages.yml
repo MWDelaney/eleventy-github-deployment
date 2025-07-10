@@ -58,8 +58,6 @@ jobs:
     # Deploy the site to GitHub Pages
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repo to access custom actions
-      - uses: actions/checkout@v4
 
       # Deploy to GitHub Pages
       - name: 🚀 Deploy to GitHub Pages
