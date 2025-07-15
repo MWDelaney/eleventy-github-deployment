@@ -35,6 +35,8 @@ on:
 
 env:
   environment: production
+  build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
+  publish_dir: ${{ vars.PUBLISH_DIR || '_site' }}
 
 jobs:
 
@@ -48,7 +50,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
+          build_command: ${{ env.build_command }}
 
   deploy:
     # Add a dependency to the build job
@@ -61,35 +63,14 @@ jobs:
     # Deploy the site to FTP server
     runs-on: ubuntu-latest
     steps:
-      # Start a deployment
-      - name: 🟢 Start Deployment
-        id: deployment
-        uses: bobheadxi/deployments@v1
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: ${{ env.environment }}
-
       # Deploy to FTP server
       - name: 🚀 Deploy to FTP
         id: ftp_deploy
         uses: ./.github/actions/deploy-ftp
         with:
-          artifact_name: public
-          artifact_path: public
+          artifact_name: ${{ env.publish_dir }}
+          artifact_path: ${{ env.publish_dir }}
           ftp_server: ${{ secrets.FTP_SERVER }}
           ftp_username: ${{ secrets.FTP_USERNAME }}
           ftp_password: ${{ secrets.FTP_PASSWORD }}
           server_dir: ${{ vars.FTP_SERVER_DIR || '/' }}
-
-      # Set the deployment status to success
-      - name: ✅ Finish Deployment
-        uses: bobheadxi/deployments@v1
-        if: always()
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          env: ${{ steps.deployment.outputs.env }}
-          env_url: ${{ vars.SITE_URL }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}

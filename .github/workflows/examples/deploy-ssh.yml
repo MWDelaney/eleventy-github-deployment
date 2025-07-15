@@ -41,6 +41,8 @@ on:
 
 env:
   environment: production
+  build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
+  publish_dir: ${{ vars.PUBLISH_DIR || '_site' }}
 
 jobs:
 
@@ -54,7 +56,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
+          build_command: ${{ env.build_command }}
 
   deploy:
     # Add a dependency to the build job
@@ -67,7 +69,7 @@ jobs:
         id: ssh_deploy
         uses: ./.github/actions/deploy-ssh
         with:
-          source_path: ${{ vars.PUBLISH_DIR || '_site' }}
+          source_path: ${{ env.publish_dir }}
           ssh_server: ${{ secrets.SSH_SERVER }}
           ssh_username: ${{ secrets.SSH_USERNAME }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

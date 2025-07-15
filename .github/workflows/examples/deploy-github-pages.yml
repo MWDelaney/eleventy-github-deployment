@@ -28,6 +28,8 @@ on:
 
 env:
   environment: production
+  build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
+  publish_dir: ${{ vars.PUBLISH_DIR || '_site' }}
 
 jobs:
 
@@ -43,7 +45,8 @@ jobs:
         uses: ./.github/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_command: ${{ secrets.BUILD_COMMAND || 'npm run build' }}
+          build_command: ${{ env.build_command }}
+          publish_dir: ${{ env.publish_dir }}
           github_pages: true
 
   deploy:

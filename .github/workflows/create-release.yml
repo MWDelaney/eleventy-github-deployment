@@ -19,10 +19,11 @@ run-name: create-release
 
 on:
   workflow_dispatch:
-  deployment:
+  # deployment: # Uncomment this line to trigger on deployments
 
 env:
   environment: production
+  build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
 
 jobs:
   build:
@@ -35,7 +36,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_command: ${{ vars.BUILD_COMMAND || 'npm run build' }}
+          build_command: ${{ env.build_command }}
 
   release:
       needs: build

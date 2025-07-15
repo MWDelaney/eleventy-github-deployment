@@ -4,11 +4,11 @@ inputs:
   artifact_name:
     description: 'Name of the artifact to download'
     required: false
-    default: 'public'
+    default: '_site'
   artifact_path:
     description: 'Path to extract the artifact to'
     required: false
-    default: 'public'
+    default: '_site'
   ftp_server:
     description: 'FTP server hostname'
     required: true
@@ -29,6 +29,15 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    # Start a deployment
+    - name: 🟢 Start Deployment
+      id: deployment
+      uses: bobheadxi/deployments@v1
+      with:
+        step: start
+        token: ${{ inputs.github_token }}
+        env: ${{ inputs.environment }}
+
     # Get the artifact from the build job
     - name: 📥 Get artifact
       id: get_artifact
@@ -47,3 +56,16 @@ runs:
         local-dir: ${{ inputs.artifact_path }}/
         server-dir: ${{ inputs.server_dir }}
         exclude: ${{ inputs.exclude }}
+
+
+    # Set the deployment status to success
+    - name: ✅ Finish Deployment
+      uses: bobheadxi/deployments@v1
+      if: always()
+      with:
+        step: finish
+        token: ${{ inputs.github_token }}
+        status: ${{ job.status }}
+        env: ${{ steps.deployment.outputs.env }}
+        env_url: ${{ inputs.site_url }}
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
