@@ -34,12 +34,16 @@ env:
 jobs:
 
   build:
-    # Only run this job if the repository has a GitHub Pages site
-    if: ${{ github.event.repository.has_pages }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      # Checkout the repository
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       # Build the site
       - name: 👷‍♂️ Build the site
         uses: ./.github/actions/build
@@ -53,6 +57,11 @@ jobs:
     # Add a dependency to the build job
     needs: build
 
+    # Job environment
+    environment:
+      name: github-pages
+      url: ${{ steps.gh_pages.outputs.page_url }}
+
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write # to deploy to Pages
@@ -61,6 +70,11 @@ jobs:
     # Deploy the site to GitHub Pages
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Deploy to GitHub Pages
       - name: 🚀 Deploy to GitHub Pages

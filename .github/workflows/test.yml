@@ -27,6 +27,12 @@ jobs:
     permissions:
       contents: write
     steps:
+      # Checkout the repository
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       # Build the site
       - name: 👷‍♂️ Build the site
         uses: ./.github/actions/build

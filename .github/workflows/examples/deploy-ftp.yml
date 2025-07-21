@@ -45,6 +45,12 @@ jobs:
     permissions:
       contents: write
     steps:
+      # Checkout the repository
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       # Build the site
       - name: 👷‍♂️ Build the site
         uses: ./.github/actions/build
@@ -63,6 +69,12 @@ jobs:
     # Deploy the site to FTP server
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       # Deploy to FTP server
       - name: 🚀 Deploy to FTP
         id: ftp_deploy
