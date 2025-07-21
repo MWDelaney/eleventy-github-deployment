@@ -5,6 +5,10 @@
 # This workflow builds the site and creates a new GitHub release.
 # It can be triggered manually via workflow_dispatch.
 #
+# Required Settings:
+#   - Actions Permissions -> Workflow Permissions
+#     - Set to "Read and write permissions" for the workflow to create releases
+#
 # Optional Variables (Settings → Secrets and variables → Actions → Variables):
 #   - BUILD_COMMAND: The npm command to run for building the site (defaults to "npm run build")
 #
