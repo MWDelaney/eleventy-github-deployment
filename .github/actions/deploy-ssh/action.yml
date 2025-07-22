@@ -4,7 +4,7 @@ inputs:
   source_path:
     description: 'Path to the build directory to deploy'
     required: false
-    default: 'public'
+    default: '_site'
   ssh_server:
     description: 'SSH server hostname'
     required: true

@@ -12,7 +12,7 @@ Automated deployment workflows for [Eleventy](https://11ty.dev) static sites usi
 - **GitHub Pages** - Free hosting with automatic SSL
 - **SSH Server** - Deploy to your own server via SSH
 - **FTP Server** - Deploy to traditional web hosting
-- **Manual Releases** - Create tagged releases without deployment
+- **Manual Releases** - Create tagged GitHub releases for version tracking
 
 ## 📁 Project Structure
 
@@ -57,6 +57,7 @@ Automated deployment workflows for [Eleventy](https://11ty.dev) static sites usi
 **Optional Variables:**
 
 - `BUILD_COMMAND` - Build command (default: `npm run build`)
+- `PUBLISH_DIR` - Build output directory (default: `_site`)
 
 ### SSH Deployment
 
@@ -74,6 +75,7 @@ Automated deployment workflows for [Eleventy](https://11ty.dev) static sites usi
 **Optional Variables:**
 
 - `BUILD_COMMAND` - Build command (default: `npm run build`)
+- `PUBLISH_DIR` - Build output directory (default: `_site`)
 - `SSH_PORT` - SSH port (default: `22`)
 - `SSH_EXCLUDE` - Files to exclude (comma separated)
 
@@ -92,7 +94,24 @@ Automated deployment workflows for [Eleventy](https://11ty.dev) static sites usi
 **Optional Variables:**
 
 - `BUILD_COMMAND` - Build command (default: `npm run build`)
+- `PUBLISH_DIR` - Build output directory (default: `_site`)
 - `FTP_SERVER_DIR` - Upload directory (default: `/`)
+
+### Manual Releases
+
+**Setup:**
+
+- No additional setup required
+- Manually trigger via **Actions → Create Release**
+
+**Required Permissions:**
+
+- Actions → General → Workflow permissions set to "Read and write permissions"
+
+**Optional Variables:**
+
+- `BUILD_COMMAND` - Build command (default: `npm run build`)
+- `PUBLISH_DIR` - Build output directory (default: `_site`)
 
 ## 🔧 Features
 

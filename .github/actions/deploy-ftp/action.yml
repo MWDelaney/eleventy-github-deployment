@@ -26,6 +26,15 @@ inputs:
     description: 'Files to exclude from deployment (comma separated)'
     required: false
     default: ''
+  github_token:
+    description: 'GitHub token for deployment tracking'
+    required: true
+  environment:
+    description: 'Environment name for deployment'
+    required: true
+  site_url:
+    description: 'Site URL for deployment status'
+    required: true
 runs:
   using: 'composite'
   steps:

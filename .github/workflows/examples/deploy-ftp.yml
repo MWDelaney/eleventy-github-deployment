@@ -86,3 +86,6 @@ jobs:
           ftp_username: ${{ secrets.FTP_USERNAME }}
           ftp_password: ${{ secrets.FTP_PASSWORD }}
           server_dir: ${{ vars.FTP_SERVER_DIR || '/' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          environment: ${{ env.environment }}
+          site_url: ${{ vars.SITE_URL }}
