@@ -1,4 +1,5 @@
 # Deploy Eleventy from GitHub
+![deployment-logo](https://github.com/user-attachments/assets/2f9fd805-110b-40c9-b123-1e7ffa0d3331)
 
 Automated deployment workflows for [Eleventy](https://11ty.dev) static sites using GitHub Actions. Deploy to GitHub Pages, FTP servers, or SSH servers with integrated release management and deployment tracking.
 
